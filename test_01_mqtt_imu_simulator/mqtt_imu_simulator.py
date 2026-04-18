@@ -82,7 +82,7 @@ def on_disconnect(client, userdata, reason_code, properties=None):
 
 
 def on_message(client, userdata, msg):
-    print(f"[LCD ] ← {msg.payload.decode(errors='replace')}")
+    print(f"[LCD ] <- {msg.payload.decode(errors='replace')}")
 
 
 # ---------------------------------------------------------------------------
@@ -125,14 +125,14 @@ def main():
         now     = time.time()
         payload = simulate_imu()
         client.publish(TOPIC_IMU, json.dumps(payload), qos=QOS)
-        print(f"[IMU ] → {json.dumps(payload)}")
+        print(f"[IMU ] -> {json.dumps(payload)}")
         _seq += 1
 
         if now - last_heartbeat >= HEARTBEAT_INTERVAL_S:
             uptime = round(now - _start_time, 1)
             hb = {"status": "alive", "uptime": uptime, "seq": _seq}
             client.publish(TOPIC_STATUS, json.dumps(hb), qos=QOS)
-            print(f"[BEAT] → {json.dumps(hb)}")
+            print(f"[BEAT] -> {json.dumps(hb)}")
             last_heartbeat = now
 
         time.sleep(PUBLISH_INTERVAL_S)
